@@ -11,5 +11,4 @@ The keypair uses Elliptic curve algorithm (secp256r1) with PKCS1 padding.
 
 It was a bit tricky to find out how to do all this in Swift 3, so here it is :)
 
-Inspired by [https://github.com/trailofbits/SecureEnclaveCrypto](https://github.com/trailofbits/SecureEnclaveCrypto).
-
+Code written by @hfossli
