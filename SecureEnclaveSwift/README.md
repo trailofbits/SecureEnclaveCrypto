@@ -1,14 +1,27 @@
-Secure Enclave Swift
-====================
+Secure Enclave Helper
+=====================
 
-This project shows you how to 
-- create a keypair where as the private key is stored in the secure enclave
-- sign a string / some data with the private key
-- use the security functions like SecKeyRawVerify, SecKeyGeneratePair and SecItemCopyMatching in Swift 3
-- store the public key in the keychain
+This demo won't run on a simulator (Secure Enclave is obviously needed).
 
-The keypair uses Elliptic curve algorithm (secp256r1) with PKCS1 padding.
+If you want to test how this behaves while the app is in background you can use the "Sign with delay" button and hit the home button. While generating the key pair you may set different access levels like:
+```
+let accessControl = try helper.accessControl(with: kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly)
+let keypairResult = try helper.generateKeyPair(accessControl: accessControl)
+```
 
-It was a bit tricky to find out how to do all this in Swift 3, so here it is :)
+<img alt="" src="SecureEnclaveDemo/screenshot.png" width="33%" />
 
-Code written by @hfossli
+## SecureEnclaveHelper.swift
+
+This is a stateless class whose main functions are
+- generate key pair
+- save the public key in keychain
+- save the private key in secure enclave
+- retreive key pair
+- sign a message
+- verify a signature
+- delete key pair
+
+By design business logic for what do to if keys are missing etc is not part of this class. That level of logic should be handled by the app or a manager on the outside. See `ViewController.swift` and `SecureEnclaveManager.swift` for ideas on this topic.
+
+You may either embed this directly in your project or use it as a guidance for how to use the Security API in Swift 3.
