@@ -1,5 +1,5 @@
 //
-//  SecureEnclaveManager.swift
+//  Manager.swift
 //  BankAxept
 //
 //  Created by Håvard Fossli on 11.11.2016.
@@ -8,9 +8,12 @@
 
 import Foundation
 
-final class SecureEnclaveManager {
+final class Manager {
     
-    static let shared = SecureEnclaveManager()
+    static let shared = Manager()
+    private init() {}
+    
+    private let helper = SecureEnclaveHelper(publicLabel: "no.agens.demo.publicKey", privateLabel: "no.agens.demo.privateKey", operationPrompt: "Authenticate to continue")
     
     func deleteKeyPair() throws {
         try helper.deletePublicKey()
@@ -33,22 +36,14 @@ final class SecureEnclaveManager {
         return signed
     }
     
-    private let helper = SecureEnclaveHelper(publicLabel: "no.agens.demo.publicKey", privateLabel: "no.agens.demo.privateKey")
-    
     private func getKeys() throws -> (`public`: SecureEnclaveKeyData, `private`: SecureEnclaveKeyReference) {
         if let publicKeyRef = try? helper.getPublicKey(), let privateKey = try? helper.getPrivateKey() {
             return (public: publicKeyRef, private: privateKey)
         }
         else {
-            var accessControlError: Unmanaged<CFError>?
-            let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, [.userPresence, .privateKeyUsage], &accessControlError)
-            guard accessControl != nil else {
-                throw SecureEnclaveHelperError(message: "Could not generate access control. Error \(accessControlError?.takeRetainedValue())", osStatus: nil)
-            }
-            
-            let keypairResult = try helper.generateKeyPair(accessControl: accessControl!)
+            let accessControl = try helper.accessControl(with: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly)
+            let keypairResult = try helper.generateKeyPair(accessControl: accessControl)
             try helper.forceSavePublicKey(keypairResult.public)
-            
             return (public: try helper.getPublicKey(), private: try helper.getPrivateKey())
         }
     }

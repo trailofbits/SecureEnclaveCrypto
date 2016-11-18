@@ -62,14 +62,16 @@ final class SecureEnclaveHelper {
     
     let publicLabel: String
     let privateLabel: String
+    let operationPrompt: String
     
     /*!
      @param publicLabel The user visible label in the device's key chain
      @param privateLabel The label used to identify the key in the secure enclave
      */
-    init(publicLabel: String, privateLabel: String) {
+    init(publicLabel: String, privateLabel: String, operationPrompt: String) {
         self.publicLabel = publicLabel
         self.privateLabel = privateLabel
+        self.operationPrompt = operationPrompt
     }
     
     func sign(_ digest: Data, privateKey: SecureEnclaveKeyReference) throws -> Data {
@@ -118,7 +120,7 @@ final class SecureEnclaveHelper {
             kSecAttrKeyClass as String: kSecAttrKeyClassPrivate,
             kSecAttrLabel as String: privateLabel,
             kSecReturnRef as String: true,
-            kSecUseOperationPrompt as String: "Authenticate to sign data",
+            kSecUseOperationPrompt as String: self.operationPrompt,
             ]
         let raw = try getSecKeyWithQuery(query)
         return SecureEnclaveKeyReference(raw as! SecKey)
@@ -208,6 +210,15 @@ final class SecureEnclaveHelper {
         guard status == errSecSuccess else {
             throw SecureEnclaveHelperError(message: "Could not save keypair", osStatus: status)
         }
+    }
+    
+    func accessControl(with protection: CFString = kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, flags: SecAccessControlCreateFlags = [.userPresence, .privateKeyUsage]) throws -> SecAccessControl {
+        var accessControlError: Unmanaged<CFError>?
+        let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault, protection, flags, &accessControlError)
+        guard accessControl != nil else {
+            throw SecureEnclaveHelperError(message: "Could not generate access control. Error \(accessControlError?.takeRetainedValue())", osStatus: nil)
+        }
+        return accessControl!
     }
     
     private var attrKeyTypeEllipticCurve: String {

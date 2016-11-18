@@ -17,7 +17,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         do {
-            publicKeyLabel.text = try SecureEnclaveManager.shared.publicKey()
+            let publicKey = try Manager.shared.publicKey()
+            publicKeyLabel.text = publicKey
+            print("Public key \(publicKey)")
         } catch let error {
             print("Error \(error)")
             publicKeyLabel.text = "Error occured. See console."
@@ -27,8 +29,10 @@ class ViewController: UIViewController {
     @IBAction func sign(_ sender: Any) {
         do {
             let input = inputLabel.text?.data(using: .utf8) ?? Data()
-            let result = try SecureEnclaveManager.shared.sign(input)
-            signatureLabel.text = result.map { String(format: "%02hhx", $0) }.joined()
+            let signature = try Manager.shared.sign(input)
+            let signatureAsHex = signature.map { String(format: "%02hhx", $0) }.joined()
+            signatureLabel.text = signatureAsHex
+            print("Signature \(signatureAsHex)")
         } catch let error {
             print("Error \(error)")
             signatureLabel.text = "Error occured. See console."
@@ -37,8 +41,10 @@ class ViewController: UIViewController {
 
     @IBAction func regenerateKeypair(_ sender: Any) {
         do {
-            try SecureEnclaveManager.shared.deleteKeyPair()
-            publicKeyLabel.text = try SecureEnclaveManager.shared.publicKey()
+            try Manager.shared.deleteKeyPair()
+            let publicKey = try Manager.shared.publicKey()
+            publicKeyLabel.text = publicKey
+            print("Recreated public key \(publicKey)")
         } catch let error {
             print("Error \(error)")
             publicKeyLabel.text = "Error occured. See console."

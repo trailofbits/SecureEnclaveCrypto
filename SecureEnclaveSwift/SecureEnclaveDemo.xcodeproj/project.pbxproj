@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A30595821DDE45B1007FBC2A /* SecureEnclaveHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30595811DDE45B1007FBC2A /* SecureEnclaveHelper.swift */; };
 		A33017CB1DD9B64800FF32E3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33017CA1DD9B64800FF32E3 /* AppDelegate.swift */; };
 		A33017CD1DD9B64800FF32E3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33017CC1DD9B64800FF32E3 /* ViewController.swift */; };
 		A33017D01DD9B64800FF32E3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A33017CE1DD9B64800FF32E3 /* Main.storyboard */; };
 		A33017D21DD9B64800FF32E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A33017D11DD9B64800FF32E3 /* Assets.xcassets */; };
 		A33017D51DD9B64800FF32E3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A33017D31DD9B64800FF32E3 /* LaunchScreen.storyboard */; };
 		A33017E01DD9B64800FF32E3 /* SecureEnclaveDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33017DF1DD9B64800FF32E3 /* SecureEnclaveDemoTests.swift */; };
-		A33017EB1DD9B65300FF32E3 /* SecureEnclaveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33017EA1DD9B65300FF32E3 /* SecureEnclaveManager.swift */; };
-		A33017ED1DD9B69400FF32E3 /* SecureEnclaveKeyPairHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33017EC1DD9B69400FF32E3 /* SecureEnclaveKeyPairHelper.swift */; };
+		A33017EB1DD9B65300FF32E3 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33017EA1DD9B65300FF32E3 /* Manager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A30595811DDE45B1007FBC2A /* SecureEnclaveHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureEnclaveHelper.swift; sourceTree = "<group>"; };
 		A33017C71DD9B64800FF32E3 /* SecureEnclaveDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SecureEnclaveDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A33017CA1DD9B64800FF32E3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A33017CC1DD9B64800FF32E3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -38,8 +39,7 @@
 		A33017DB1DD9B64800FF32E3 /* SecureEnclaveDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SecureEnclaveDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A33017DF1DD9B64800FF32E3 /* SecureEnclaveDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureEnclaveDemoTests.swift; sourceTree = "<group>"; };
 		A33017E11DD9B64800FF32E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A33017EA1DD9B65300FF32E3 /* SecureEnclaveManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureEnclaveManager.swift; sourceTree = "<group>"; };
-		A33017EC1DD9B69400FF32E3 /* SecureEnclaveKeyPairHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureEnclaveKeyPairHelper.swift; sourceTree = "<group>"; };
+		A33017EA1DD9B65300FF32E3 /* Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +63,7 @@
 		A33017BE1DD9B64800FF32E3 = {
 			isa = PBXGroup;
 			children = (
+				A30595811DDE45B1007FBC2A /* SecureEnclaveHelper.swift */,
 				A33017C91DD9B64800FF32E3 /* SecureEnclaveDemo */,
 				A33017DE1DD9B64800FF32E3 /* SecureEnclaveDemoTests */,
 				A33017C81DD9B64800FF32E3 /* Products */,
@@ -83,8 +84,7 @@
 			children = (
 				A33017CA1DD9B64800FF32E3 /* AppDelegate.swift */,
 				A33017CC1DD9B64800FF32E3 /* ViewController.swift */,
-				A33017EA1DD9B65300FF32E3 /* SecureEnclaveManager.swift */,
-				A33017EC1DD9B69400FF32E3 /* SecureEnclaveKeyPairHelper.swift */,
+				A33017EA1DD9B65300FF32E3 /* Manager.swift */,
 				A33017CE1DD9B64800FF32E3 /* Main.storyboard */,
 				A33017D11DD9B64800FF32E3 /* Assets.xcassets */,
 				A33017D31DD9B64800FF32E3 /* LaunchScreen.storyboard */,
@@ -207,8 +207,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A33017CD1DD9B64800FF32E3 /* ViewController.swift in Sources */,
-				A33017EB1DD9B65300FF32E3 /* SecureEnclaveManager.swift in Sources */,
-				A33017ED1DD9B69400FF32E3 /* SecureEnclaveKeyPairHelper.swift in Sources */,
+				A30595821DDE45B1007FBC2A /* SecureEnclaveHelper.swift in Sources */,
+				A33017EB1DD9B65300FF32E3 /* Manager.swift in Sources */,
 				A33017CB1DD9B64800FF32E3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -419,6 +419,7 @@
 				A33017E61DD9B64800FF32E3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A33017E71DD9B64800FF32E3 /* Build configuration list for PBXNativeTarget "SecureEnclaveDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -427,6 +428,7 @@
 				A33017E91DD9B64800FF32E3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
