@@ -1,14 +1,15 @@
+<img align="right" alt="" src="SecureEnclaveDemo/screenshot.png" width="33%" />
+
 Secure Enclave Helper
 =====================
-
-<img alt="" src="SecureEnclaveDemo/screenshot.png" width="33%" />
 
 This demo won't run on a simulator (Secure Enclave is obviously needed).
 
 If you want to test how this behaves while the app is in background you can use the "Sign with delay" button and hit the home button. While generating the key pair you may set different access levels like:
 ```
-let accessControl = try helper.accessControl(with: kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly)
-let keypairResult = try helper.generateKeyPair(accessControl: accessControl)
+let access = kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly
+let control = try helper.accessControl(with: access)
+let keypair = try helper.generateKeyPair(accessControl: control)
 ```
 
 ## SecureEnclaveHelper.swift
