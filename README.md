@@ -1,7 +1,7 @@
 SecureEnclaveCrypto
 ===================
 
-<img align="right" alt="" src="SecureEnclaveSwift/SecureEnclaveDemo/screenshot.png" width="400px" />
+<img align="right" alt="" src="SecureEnclaveSwift/SecureEnclaveDemo/screenshot.png" width="300px" />
 
 This project shows you how to
 - create a keypair where as the private key is stored in the secure enclave
