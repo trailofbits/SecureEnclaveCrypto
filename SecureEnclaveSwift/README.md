@@ -1,7 +1,7 @@
-<img align="right" alt="" src="SecureEnclaveDemo/screenshot.png" width="33%" />
-
 Secure Enclave Helper
 =====================
+
+<img align="right" alt="" src="SecureEnclaveDemo/screenshot.png" width="300px" />
 
 This demo won't run on a simulator (Secure Enclave is obviously needed).
 
