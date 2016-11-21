@@ -1,6 +1,8 @@
 SecureEnclaveCrypto
 ===================
 
+<img align="right" alt="" src="SecureEnclaveSwift/SecureEnclaveDemo/screenshot.png" width="33%" />
+
 This project shows you how to
 - create a keypair where as the private key is stored in the secure enclave
 - sign a string / some data with the private key
@@ -14,6 +16,7 @@ We tried to use this API shortly after it was released and found it lacking: the
 ## Show me the code
 
 This project thus contains two codebases, one in [Swift](SecureEnclaveSwift) (from [@hfossli](https://github.com/hfossli) and one in [Objective-C](SecureEnclaveObjective-C) which show how to use this API for basic functionality. Both directories contain a `README.md` file with more specific documentation.
+
 
 
 ## Creating OpenSSL-compatible public key
