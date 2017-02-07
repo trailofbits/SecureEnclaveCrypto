@@ -189,6 +189,7 @@ final class SecureEnclaveHelper {
         return true
     }
     
+    @available(iOS 10.3, *)
     func encrypt(_ digest: Data, publicKey: SecureEnclaveKeyReference) throws -> Data {
         var error : Unmanaged<CFError>?
 
@@ -201,6 +202,7 @@ final class SecureEnclaveHelper {
         return result as! Data
     }
     
+    @available(iOS 10.3, *)
     func decrypt(_ digest: Data, privateKey: SecureEnclaveKeyReference) throws -> Data {
         var error : Unmanaged<CFError>?
         
