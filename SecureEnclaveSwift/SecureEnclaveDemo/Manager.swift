@@ -44,12 +44,14 @@ final class Manager {
         return signed
     }
     
+    @available(iOS 10.3, *)
     func encrypt(_ data: Data) throws -> Data {
         let keys = try getKeys()
         let signed = try helper.encrypt(data, publicKey: keys.public.ref)
         return signed
     }
     
+    @available(iOS 10.3, *)
     func decrypt(_ data: Data) throws -> Data {
         let keys = try getKeys()
         let signed = try helper.decrypt(data, privateKey: keys.private)
