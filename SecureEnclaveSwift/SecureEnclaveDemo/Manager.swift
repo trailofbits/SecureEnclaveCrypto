@@ -44,6 +44,20 @@ final class Manager {
         return signed
     }
     
+    @available(iOS 10.3, *)
+    func encrypt(_ data: Data) throws -> Data {
+        let keys = try getKeys()
+        let signed = try helper.encrypt(data, publicKey: keys.public.ref)
+        return signed
+    }
+    
+    @available(iOS 10.3, *)
+    func decrypt(_ data: Data) throws -> Data {
+        let keys = try getKeys()
+        let signed = try helper.decrypt(data, privateKey: keys.private)
+        return signed
+    }
+    
     private func getKeys() throws -> (`public`: SecureEnclaveKeyData, `private`: SecureEnclaveKeyReference) {
         if let publicKeyRef = try? helper.getPublicKey(), let privateKey = try? helper.getPrivateKey() {
             return (public: publicKeyRef, private: privateKey)

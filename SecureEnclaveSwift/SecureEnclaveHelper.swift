@@ -189,6 +189,32 @@ final class SecureEnclaveHelper {
         return true
     }
     
+    @available(iOS 10.3, *)
+    func encrypt(_ digest: Data, publicKey: SecureEnclaveKeyReference) throws -> Data {
+        var error : Unmanaged<CFError>?
+
+        let result = SecKeyCreateEncryptedData(publicKey.underlying, SecKeyAlgorithm.eciesEncryptionStandardX963SHA256AESGCM, digest as CFData, &error)
+        
+        if result == nil {
+            throw SecureEnclaveHelperError(message: "\(error)", osStatus: 0)
+        }
+
+        return result as! Data
+    }
+    
+    @available(iOS 10.3, *)
+    func decrypt(_ digest: Data, privateKey: SecureEnclaveKeyReference) throws -> Data {
+        var error : Unmanaged<CFError>?
+        
+        let result = SecKeyCreateDecryptedData(privateKey.underlying, SecKeyAlgorithm.eciesEncryptionStandardX963SHA256AESGCM, digest as CFData, &error)
+        
+        if result == nil {
+            throw SecureEnclaveHelperError(message: "\(error)", osStatus: 0)
+        }
+        
+        return result as! Data
+    }
+    
     func forceSavePublicKey(_ publicKey: SecureEnclaveKeyReference) throws {
         
         let query: [String: Any] = [
