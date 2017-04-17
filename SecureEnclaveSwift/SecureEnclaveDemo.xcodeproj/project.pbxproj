@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		197AEAA61E891135009229B4 /* ErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197AEAA51E891135009229B4 /* ErrorViewController.swift */; };
 		A30595821DDE45B1007FBC2A /* SecureEnclaveHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30595811DDE45B1007FBC2A /* SecureEnclaveHelper.swift */; };
 		A33017CB1DD9B64800FF32E3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33017CA1DD9B64800FF32E3 /* AppDelegate.swift */; };
 		A33017CD1DD9B64800FF32E3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33017CC1DD9B64800FF32E3 /* ViewController.swift */; };
@@ -29,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		19294B7B1E75DC4F005DE441 /* SecureEnclaveDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SecureEnclaveDemo.entitlements; sourceTree = "<group>"; };
+		197AEAA51E891135009229B4 /* ErrorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorViewController.swift; sourceTree = "<group>"; };
 		A30595811DDE45B1007FBC2A /* SecureEnclaveHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureEnclaveHelper.swift; sourceTree = "<group>"; };
 		A33017C71DD9B64800FF32E3 /* SecureEnclaveDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SecureEnclaveDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A33017CA1DD9B64800FF32E3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 			children = (
 				19294B7B1E75DC4F005DE441 /* SecureEnclaveDemo.entitlements */,
 				A33017CA1DD9B64800FF32E3 /* AppDelegate.swift */,
+				197AEAA51E891135009229B4 /* ErrorViewController.swift */,
 				A33017CC1DD9B64800FF32E3 /* ViewController.swift */,
 				A33017EA1DD9B65300FF32E3 /* Manager.swift */,
 				A33017CE1DD9B64800FF32E3 /* Main.storyboard */,
@@ -215,6 +218,7 @@
 			files = (
 				A33017CD1DD9B64800FF32E3 /* ViewController.swift in Sources */,
 				A30595821DDE45B1007FBC2A /* SecureEnclaveHelper.swift in Sources */,
+				197AEAA61E891135009229B4 /* ErrorViewController.swift in Sources */,
 				A33017EB1DD9B65300FF32E3 /* Manager.swift in Sources */,
 				A33017CB1DD9B64800FF32E3 /* AppDelegate.swift in Sources */,
 			);

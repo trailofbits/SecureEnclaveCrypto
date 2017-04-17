@@ -17,6 +17,8 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    var publicKey = ""
 
     @IBOutlet weak var publicKeyTextField: UITextField!
     @IBOutlet weak var inputTextField: UITextField!
@@ -25,17 +27,26 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+    }
+    
+    @IBAction func generateKeypair(_ sender: Any) {
         
         do {
             
-            let publicKey = try Manager.shared.publicKey()
+            if !publicKey.isEmpty {
+                try Manager.shared.deleteKeyPair()
+            }
+            
+            publicKey = try Manager.shared.publicKey()
             publicKeyTextField.text = publicKey
             print("Public key \(publicKey)")
         }
         catch let error {
             
+            let errorHelper = error as! SecureEnclaveHelperError
+            showErrorCode(link: errorHelper.link)
+            
             print("Error \(error)")
-            publicKeyTextField.text = "Error occured. See console."
         }
     }
     
@@ -51,27 +62,14 @@ class ViewController: UIViewController {
         }
         catch let error {
             
+            let errorHelper = error as! SecureEnclaveHelperError
+            showErrorCode(link: errorHelper.link)
+            
             print("Error \(error)")
-            signatureTextField.text = "Error occured. See console."
+            signatureTextField.text = ""
         }
     }
 
-    @IBAction func regenerateKeypair(_ sender: Any) {
-        
-        do {
-            
-            try Manager.shared.deleteKeyPair()
-            let publicKey = try Manager.shared.publicKey()
-            publicKeyTextField.text = publicKey
-            print("Recreated public key \(publicKey)")
-        }
-        catch let error {
-            
-            print("Error \(error)")
-            publicKeyTextField.text = "Error occured. See console."
-        }
-    }
-    
     @IBAction func signWithDelay(_ sender: Any) {
         
         let task = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
@@ -80,6 +78,14 @@ class ViewController: UIViewController {
             self.sign(sender)
             UIApplication.shared.endBackgroundTask(task)
         }
+    }
+    
+    func showErrorCode(link: String) {
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "ErrorViewController") as! ErrorViewController
+        vc.url = link
+        self.present(vc, animated: true, completion: nil)
     }
 }
 
