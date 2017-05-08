@@ -25,14 +25,14 @@
 
 @interface KeyInterface : NSObject
 
-+ (bool) generateTouchIDKeyPair;
-+ (bool) publicKeyExists;
-+ (bool) deletePubKey;
-+ (bool) deletePrivateKey;
-+ (SecKeyRef) lookupPublicKeyRef;
-+ (NSData *) publicKeyBits;
-+ (SecKeyRef) lookupPrivateKeyRef;
++ (BOOL)generateTouchIDKeyPair;
++ (BOOL)existsPublicKey;
++ (BOOL)deletePublicKey;
++ (BOOL)deletePrivateKey;
++ (SecKeyRef)lookupPublicKeyRef;
++ (NSData *)publicKeyBits;
++ (SecKeyRef)lookupPrivateKeyRef;
 
-+ (void)generateSignatureForData:(NSData *)inputData withCompletion:(void(^)(NSData *data, NSError *err))completion;
++ (void)generateSignatureForData:(NSData *)inputData withCompletion:(void(^)(NSData *data, NSError *error))completion;
 
 @end

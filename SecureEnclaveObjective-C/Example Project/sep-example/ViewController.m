@@ -27,26 +27,30 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad {
+- (void) viewDidLoad {
+    
   [super viewDidLoad];
-  }
+}
 
--(void)viewDidAppear:(BOOL)animated {
+- (void) viewDidAppear:(BOOL)animated {
+    
   [super viewDidAppear:animated];
+    
   [KeyInterface generateTouchIDKeyPair];
   NSLog(@"Public key raw bits:\n%@", [KeyInterface publicKeyBits]);
-  NSString *dataString = @"Hello World";
-  [KeyInterface generateSignatureForData:[dataString dataUsingEncoding:NSUTF8StringEncoding] withCompletion:^(NSData *success, NSError *err) {
+  NSString * dataString = @"Hello World";
+  
+  [KeyInterface generateSignatureForData:[dataString dataUsingEncoding:NSUTF8StringEncoding] withCompletion:^(NSData * success, NSError * error) {
     if (success != nil) {
       NSLog(@"Signature for data: %@", success);
     }
     else {
-      NSLog(@"Error: %@", err);
+      NSLog(@"Error: %@", error);
     }
   }];
+  
   [KeyInterface deletePrivateKey];
-  [KeyInterface deletePubKey];
-
+  [KeyInterface deletePublicKey];
 }
 
 - (void)didReceiveMemoryWarning {

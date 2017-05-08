@@ -24,12 +24,12 @@
 
 @implementation KeyInterface
 
-static SecKeyRef publicKeyRef;
-static SecKeyRef privateKeyRef;
-static NSData    *publicKeyBits;
+static SecKeyRef    publicKeyRef;
+static SecKeyRef    privateKeyRef;
+static NSData *     publicKeyBits;
 
-+ (bool)publicKeyExists
-{
++ (BOOL)existsPublicKey {
+    
   CFTypeRef publicKeyResult = nil;
   CFMutableDictionaryRef publicKeyExistsQuery = newCFDict;
   CFDictionarySetValue(publicKeyExistsQuery, kSecClass,               kSecClassKey);
@@ -41,19 +41,19 @@ static NSData    *publicKeyBits;
   OSStatus status = SecItemCopyMatching(publicKeyExistsQuery, (CFTypeRef *)&publicKeyResult);
 
   if (status == errSecItemNotFound) {
-    return false;
+    return NO;
   }
   else if (status == errSecSuccess) {
-    return true;
+    return YES;
   }
   else {
     [NSException raise:@"Unexpected OSStatus" format:@"Status: %i", status];
-    return nil;
+    return NO;
   }
 }
 
-+ (SecKeyRef) lookupPublicKeyRef
-{
++ (SecKeyRef)lookupPublicKeyRef {
+  
   CFMutableDictionaryRef getPublicKeyQuery = newCFDict;
   CFDictionarySetValue(getPublicKeyQuery, kSecClass,                kSecClassKey);
   CFDictionarySetValue(getPublicKeyQuery, kSecAttrKeyType,          kSecAttrKeyTypeEC);
@@ -63,25 +63,30 @@ static NSData    *publicKeyBits;
   CFDictionarySetValue(getPublicKeyQuery, kSecReturnPersistentRef,  kCFBooleanTrue);
   
   OSStatus status = SecItemCopyMatching(getPublicKeyQuery, (CFTypeRef *)&publicKeyRef);
-  if (status == errSecSuccess)
+  
+  if (status == errSecSuccess) {
     return (SecKeyRef)publicKeyRef;
-  else if (status == errSecItemNotFound)
+  }
+  else if (status == errSecItemNotFound) {
     return nil;
-  else
+  }
+  else {
     [NSException raise:@"Unexpected OSStatus" format:@"Status: %i", status];
-  return false;
-}
-
-+ (NSData *) publicKeyBits
-{
-  if (![self publicKeyExists])
     return nil;
-  return (NSData *) CFDictionaryGetValue((CFDictionaryRef)[self lookupPublicKeyRef], kSecValueData);
-    
+  }
 }
 
-+ (SecKeyRef) lookupPrivateKeyRef
-{
++ (NSData *)publicKeyBits {
+    
+  if (![self existsPublicKey]) {
+    return nil;
+  }
+  
+  return (NSData *) CFDictionaryGetValue((CFDictionaryRef)[self lookupPublicKeyRef], kSecValueData);
+}
+
++ (SecKeyRef)lookupPrivateKeyRef {
+    
   CFMutableDictionaryRef getPrivateKeyRef = newCFDict;
   CFDictionarySetValue(getPrivateKeyRef, kSecClass, kSecClassKey);
   CFDictionarySetValue(getPrivateKeyRef, kSecAttrKeyClass, kSecAttrKeyClassPrivate);
@@ -90,17 +95,19 @@ static NSData    *publicKeyBits;
   CFDictionarySetValue(getPrivateKeyRef, kSecUseOperationPrompt, @"Authenticate to sign data");
   
   OSStatus status = SecItemCopyMatching(getPrivateKeyRef, (CFTypeRef *)&privateKeyRef);
-  if (status == errSecItemNotFound)
+    
+  if (status == errSecItemNotFound) {
     return nil;
+  }
   
   return (SecKeyRef)privateKeyRef;
 }
 
-+ (bool)generateTouchIDKeyPair
-{
++ (BOOL)generateTouchIDKeyPair {
+  
   CFErrorRef error = NULL;
   // Should be the secret invalidated when passcode is removed? If not then use `kSecAttrAccessibleWhenUnlocked`.
-  SecAccessControlRef sacObject = SecAccessControlCreateWithFlags(
+  SecAccessControlRef secAccessControlObject = SecAccessControlCreateWithFlags(
     kCFAllocatorDefault,
     kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
     kSecAccessControlTouchIDAny | kSecAccessControlPrivateKeyUsage,
@@ -111,13 +118,13 @@ static NSData    *publicKeyBits;
     NSLog(@"Generate key error: %@\n", error);
   }
   
-  return [self generateKeyPairWithAccessControlObject:sacObject];
+  return [self generateKeyPairWithAccessControlObject: secAccessControlObject];
 }
 
-+ (bool) generatePasscodeKeyPair
-{
++ (BOOL)generatePasscodeKeyPair {
+  
   CFErrorRef error = NULL;
-  SecAccessControlRef sacObject = SecAccessControlCreateWithFlags(
+  SecAccessControlRef secAccessControlObject = SecAccessControlCreateWithFlags(
     kCFAllocatorDefault,
     kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
     kSecAccessControlUserPresence,
@@ -128,13 +135,13 @@ static NSData    *publicKeyBits;
     NSLog(@"Generate key error: %@\n", error);
   }
   
-  return [self generateKeyPairWithAccessControlObject:sacObject];
+  return [self generateKeyPairWithAccessControlObject: secAccessControlObject];
 }
 
-+ (bool) generateKeyPairWithAccessControlObject:(SecAccessControlRef)accessControlRef
-{
++ (BOOL)generateKeyPairWithAccessControlObject:(SecAccessControlRef)accessControlRef {
+  
   // create dict of private key info
-  CFMutableDictionaryRef accessControlDict = newCFDict;;
+  CFMutableDictionaryRef accessControlDict = newCFDict;
   CFDictionaryAddValue(accessControlDict, kSecAttrAccessControl, accessControlRef);
   CFDictionaryAddValue(accessControlDict, kSecAttrIsPermanent, kCFBooleanTrue);
   CFDictionaryAddValue(accessControlDict, kSecAttrLabel, kPrivateKeyName);
@@ -148,15 +155,16 @@ static NSData    *publicKeyBits;
   
   OSStatus status = SecKeyGeneratePair(generatePairRef, &publicKeyRef, &privateKeyRef);
   
-  if (status != errSecSuccess)
+  if (status != errSecSuccess) {
     return NO;
+  }
   
   [self savePublicKeyFromRef:publicKeyRef];
   return YES;
 }
 
-+ (bool) savePublicKeyFromRef:(SecKeyRef)publicKeyRef
-{
++ (BOOL)savePublicKeyFromRef:(SecKeyRef)publicKeyRef {
+  
   CFTypeRef keyBits;
   CFMutableDictionaryRef savePublicKeyDict = newCFDict;
   CFDictionaryAddValue(savePublicKeyDict, kSecClass,        kSecClassKey);
@@ -167,47 +175,52 @@ static NSData    *publicKeyBits;
   CFDictionaryAddValue(savePublicKeyDict, kSecAttrIsPermanent, kCFBooleanTrue);
   CFDictionaryAddValue(savePublicKeyDict, kSecReturnData, kCFBooleanTrue);
   
-  OSStatus err = SecItemAdd(savePublicKeyDict, &keyBits);
-  while (err == errSecDuplicateItem)
-  {
-    err = SecItemDelete(savePublicKeyDict);
-  }
-  err = SecItemAdd(savePublicKeyDict, &keyBits);
+  OSStatus error = SecItemAdd(savePublicKeyDict, &keyBits);
   
+  while (error == errSecDuplicateItem) {
+    error = SecItemDelete(savePublicKeyDict);
+  }
+  
+  error = SecItemAdd(savePublicKeyDict, &keyBits);
   return YES;
 }
 
-+(bool) deletePubKey {
++ (BOOL)deletePublicKey {
+  
   CFMutableDictionaryRef savePublicKeyDict = newCFDict;
   CFDictionaryAddValue(savePublicKeyDict, kSecClass,        kSecClassKey);
   CFDictionaryAddValue(savePublicKeyDict, kSecAttrKeyType,  kSecAttrKeyTypeEC);
   CFDictionaryAddValue(savePublicKeyDict, kSecAttrKeyClass, kSecAttrKeyClassPublic);
   CFDictionaryAddValue(savePublicKeyDict, kSecAttrApplicationTag, kPublicKeyName);
   
-  OSStatus err = SecItemDelete(savePublicKeyDict);
-  while (err == errSecDuplicateItem)
-  {
-    err = SecItemDelete(savePublicKeyDict);
+  OSStatus error = SecItemDelete(savePublicKeyDict);
+  
+  while (error == errSecDuplicateItem) {
+    error = SecItemDelete(savePublicKeyDict);
   }
-  return true;
+  
+  return YES;
 }
 
-+(bool) deletePrivateKey {
++ (BOOL)deletePrivateKey {
+  
   CFMutableDictionaryRef getPrivateKeyRef = newCFDict;
   CFDictionarySetValue(getPrivateKeyRef, kSecClass, kSecClassKey);
   CFDictionarySetValue(getPrivateKeyRef, kSecAttrKeyClass, kSecAttrKeyClassPrivate);
   CFDictionarySetValue(getPrivateKeyRef, kSecAttrLabel, kPrivateKeyName);
   CFDictionarySetValue(getPrivateKeyRef, kSecReturnRef, kCFBooleanTrue);
   
-  OSStatus err = SecItemDelete(getPrivateKeyRef);
-  while (err == errSecDuplicateItem)
-  {
-    err = SecItemDelete(getPrivateKeyRef);
+  OSStatus error = SecItemDelete(getPrivateKeyRef);
+  
+  while (error == errSecDuplicateItem) {
+    error = SecItemDelete(getPrivateKeyRef);
   }
-  return true;
+  
+  return YES;
 }
 
-+ (void) generateSignatureForData:(NSData *)inputData withCompletion:(void(^)(NSData*, NSError*))completion {
++ (void)generateSignatureForData:(NSData *)inputData withCompletion:(void(^)(NSData*, NSError*))completion {
+  
   const uint8_t * const digestData = [inputData bytes];
   size_t digestLength = [inputData length];
 
@@ -219,9 +232,8 @@ static NSData    *publicKeyBits;
   if (status == errSecSuccess) {
     completion([NSData dataWithBytes:signature length:signatureLength], nil);
   }
-  else
-  {
-    NSError *error = [NSError errorWithDomain:@"SecKeyError" code:status userInfo:nil];
+  else {
+    NSError * error = [NSError errorWithDomain:@"SecKeyError" code:status userInfo:nil];
     completion(nil, error);
   }
 }

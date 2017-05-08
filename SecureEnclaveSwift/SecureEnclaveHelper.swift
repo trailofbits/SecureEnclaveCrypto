@@ -235,10 +235,10 @@ final class SecureEnclaveHelper {
         
         if result == nil {
             
-            throw SecureEnclaveHelperError(message: "\(error)", osStatus: 0)
+            throw SecureEnclaveHelperError(message: "\(String(describing: error))", osStatus: 0)
         }
 
-        return result as! Data
+        return result! as Data
     }
     
     @available(iOS 10.3, *)
@@ -250,10 +250,10 @@ final class SecureEnclaveHelper {
         
         if result == nil {
             
-            throw SecureEnclaveHelperError(message: "\(error)", osStatus: 0)
+            throw SecureEnclaveHelperError(message: "\(String(describing: error))", osStatus: 0)
         }
         
-        return result as! Data
+        return result! as Data
     }
     
     func forceSavePublicKey(_ publicKey: SecureEnclaveKeyReference) throws {
@@ -291,7 +291,7 @@ final class SecureEnclaveHelper {
         
         guard accessControl != nil else {
             
-            throw SecureEnclaveHelperError(message: "Could not generate access control. Error \(accessControlError?.takeRetainedValue())", osStatus: nil)
+            throw SecureEnclaveHelperError(message: "Could not generate access control. Error \(String(describing: accessControlError?.takeRetainedValue()))", osStatus: nil)
         }
         
         return accessControl!
