@@ -1,44 +1,33 @@
-/* Copyright (c) 2016 Håvard Fossli
- * Copyright (c) 2016 Trail of Bits, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+//
+//  SecureEnclaveDemoTests.swift
+//  SecureEnclaveDemoTests
+//
+//  Created by John Kemp on 2/1/21.
+//  Copyright © 2021 Ages. All rights reserved.
+//
 
 import XCTest
-@testable import SecureEnclaveDemo
 
 class SecureEnclaveDemoTests: XCTestCase {
-    
-    override func setUp() {
-        super.setUp()
+
+    override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-    
-    override func tearDown() {
+
+    override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
     }
-    
-    func testExample() {
+
+    func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
-    
-    func testPerformanceExample() {
+
+    func testPerformanceExample() throws {
         // This is an example of a performance test case.
-        self.measure {
+        measure {
             // Put the code you want to measure the time of here.
         }
     }
-    
+
 }
