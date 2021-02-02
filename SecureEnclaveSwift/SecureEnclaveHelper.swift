@@ -235,7 +235,7 @@ final class SecureEnclaveHelper {
         
         if result == nil {
             
-            throw SecureEnclaveHelperError(message: "\(error)", osStatus: 0)
+            throw SecureEnclaveHelperError(message: "\(error).", osStatus: 0)
         }
 
         return result as! Data
@@ -250,7 +250,7 @@ final class SecureEnclaveHelper {
         
         if result == nil {
             
-            throw SecureEnclaveHelperError(message: "\(error)", osStatus: 0)
+            throw SecureEnclaveHelperError(message: "\(error).", osStatus: 0)
         }
         
         return result as! Data
